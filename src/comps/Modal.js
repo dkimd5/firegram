@@ -1,9 +1,9 @@
 import React from "react";
 
-function Modal() {
+function Modal({ selectedImg }) {
   return (
     <div className="backdrop">
-      <img src="" alt="enlarged img" />
+      <img src={selectedImg} alt="enlarged img" />
     </div>
   );
 }
