@@ -10,13 +10,15 @@ function ImageGrid({ setSelectedImg }) {
     <div className="img-grid">
       {docs &&
         docs.map((doc) => (
-          <div
+          <motion.div
             className="img-wrap"
             key={doc.id}
+            layout
+            whileHover={{ opacity: 1 }}
             onClick={() => setSelectedImg(doc.url)}
           >
             <img src={doc.url} alt="uploaded image" />
-          </div>
+          </motion.div>
         ))}
     </div>
   );
