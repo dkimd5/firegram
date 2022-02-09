@@ -5,11 +5,13 @@ import Title from "./comps/Title";
 import UploadForm from "./firebase/UploadForm";
 
 function App() {
+  const [selectedImg, setSelectedImg] = useState(null);
+
   return (
     <div className="App">
       <Title />
       <UploadForm />
-      <ImageGrid />
+      <ImageGrid setSelectedImg={setSelectedImg} />
       <Modal />
     </div>
   );
