@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, serverTimestamp } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -11,11 +11,10 @@ const firebaseConfig = {
   appId: "1:696295208301:web:2490dff08f3fc397bb9664",
 };
 
-// Initialize Firebase
-
 initializeApp(firebaseConfig);
 
 const projectStorage = getStorage();
 const projectFirestore = getFirestore();
+const timestamp = serverTimestamp();
 
-export { projectStorage, projectFirestore };
+export { projectStorage, projectFirestore, timestamp };
