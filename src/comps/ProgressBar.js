@@ -11,7 +11,13 @@ function ProgressBar({ file, setFile }) {
     }
   }, [url, setFile]);
 
-  return <div className="progress-bar"></div>;
+  return (
+    <motion.div
+      className="progress-bar"
+      initial={{ width: 0 }}
+      animate={{ width: progress + "%" }}
+    ></motion.div>
+  );
 }
 
 export default ProgressBar;
