@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProgressBar from "../comps/ProgressBar";
+import ProgressBar from "./ProgressBar";
 
 function UploadForm() {
   const [file, setFile] = useState(null);
