@@ -32,7 +32,7 @@ const useStorage = (file) => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           const createdAt = timestamp;
-          addDoc(collectionRef, { url, createdAt });
+          addDoc(collectionRef, { name: file.name, url, createdAt });
           setUrl(url);
         });
       }
