@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import useFirestore from "../hooks/useFirestore";
-import useDeleteImg from "../hooks/useDeleteImg";
 import { motion } from "framer-motion/dist/es/index";
+
+import { projectStorage, projectFirestore } from "../firebase/config";
+import { ref, deleteObject } from "firebase/storage";
+import { doc, deleteDoc } from "firebase/firestore";
 
 function ImageGrid({ setSelectedImg }) {
   const { docs } = useFirestore("images");
-  const [deleteImgKey, setDeleteImgKey] = useState("");
-  const imageDelete = useDeleteImg(deleteImgKey);
 
-  const onclickHandler = (e) => {
-    setDeleteImgKey();
+  const onclickHandlerDeleteImg = (imageName, imageId) => {
+    const deleteFileRef = ref(projectStorage, imageName);
+
+    deleteObject(deleteFileRef);
+    deleteDoc(doc(projectFirestore, "images", imageId));
   };
 
   return (
@@ -25,7 +29,10 @@ function ImageGrid({ setSelectedImg }) {
               transition={{ delay: 1 }}
               onClick={() => setSelectedImg(doc.url)}
             />
-            <button className="img-delete-btn">
+            <button
+              className="img-delete-btn"
+              onClick={() => onclickHandlerDeleteImg(doc.name, doc.id)}
+            >
               <svg
                 width="18px"
                 height="18px"
