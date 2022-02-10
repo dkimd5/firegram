@@ -5,7 +5,7 @@ import { doc, deleteDoc } from "firebase/firestore";
 
 const useDeleteImg = (image) => {
   useEffect(() => {
-    if (image != "") {
+    if (image !== "") {
       const deleteFileRef = ref(projectStorage, image.name);
 
       deleteObject(deleteFileRef);
