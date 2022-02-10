@@ -1,16 +1,18 @@
-import React from "react";
+import { useEffect } from "react";
 import { projectStorage, projectFirestore } from "../firebase/config";
 import { ref, deleteObject } from "firebase/storage";
 import { doc, deleteDoc } from "firebase/firestore";
 
 const useDeleteImg = (image) => {
   useEffect(() => {
-    //references
-    const deleteFileRef = ref(projectStorage, image.name);
-    const collectionRef = collection(projectFirestore, "images");
+    if (image != "") {
+      const deleteFileRef = ref(projectStorage, image.name);
 
-    deleteObject(deleteFileRef);
-    await deleteDoc(doc(projectFirestore, "images", image.name));
+      deleteObject(deleteFileRef);
+      deleteDoc(doc(projectFirestore, "images", image.id));
+    } else {
+      return;
+    }
   }, [image]);
 };
 
