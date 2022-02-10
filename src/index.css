@@ -85,7 +85,12 @@ label:hover{
   padding: 50% 0;
   /* padding controls height, so it will be perfectly square regardless of width */
   position: relative;
-  opacity: 0.8;
+  cursor: pointer;
+}
+
+.img-wrap:hover {
+  filter: brightness(70%);
+  transition: 0.4s;
 }
 
 .img-wrap img{
