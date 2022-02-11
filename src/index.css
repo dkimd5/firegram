@@ -202,11 +202,19 @@ label:hover{
   .img-grid {
     grid-gap: 20px;
   }
+
+  .backdrop img{
+    max-width: 80%;
+  }
 }
 
 @media (max-width: 1024px) {
   .App{
     max-width: 80%;
+  }
+
+  .backdrop img{
+    max-width: 90%;
   }
 }
 
