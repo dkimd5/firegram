@@ -3,7 +3,7 @@ import { motion } from "framer-motion/dist/es/index";
 
 function Modal({ selectedImg, setSelectedImg }) {
   const handleClick = (e) => {
-    if (e.target.classList.contains("backdrop")) {
+    if (e.target.classList.contains("modal-img-wrap")) {
       setSelectedImg(null);
     }
   };
@@ -15,12 +15,14 @@ function Modal({ selectedImg, setSelectedImg }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <motion.img
-        src={selectedImg}
-        alt="enlarged img"
-        initial={{ y: "-100vh" }}
-        animate={{ y: 0 }}
-      />
+      <div className="modal-img-wrap">
+        <motion.img
+          src={selectedImg}
+          alt="enlarged img"
+          initial={{ y: "-100vh" }}
+          animate={{ y: 0 }}
+        />
+      </div>
     </motion.div>
   );
 }
