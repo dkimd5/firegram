@@ -7,10 +7,14 @@
   --error: #ff4a4a;
 }
 
+html { overflow:auto; }
+
 /* base styles & title */
 body{
   font-family: "Noto Serif";
   color: var(--secondary);
+  overflow: hidden;
+  margin: 0;
 }
 .App{
   max-width: 960px;
@@ -22,6 +26,7 @@ body{
   font-size: 2.5rem;
   font-weight: normal;
   margin: 0;
+  margin-top: 5px;
   position: relative;
 }
 
@@ -92,6 +97,13 @@ label:hover{
 }
 
 /* image grid styles */
+.img-grid{
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 40px;
+}
+
 .img-wrap{
   overflow: hidden;
   height: 0;
@@ -118,13 +130,6 @@ label:hover{
   position: absolute;
   top: 0;
   left: -25%;
-}
-
-.img-grid{
-  margin: 20px auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 40px;
 }
 
 /* delete btn styles */
@@ -177,4 +182,72 @@ label:hover{
   max-height: 80%;
   box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
   border: 3px solid #fff;
+}
+
+@media (max-width: 1440px) {
+  .App{
+    max-width: 60%;
+  }
+
+  .title h2{
+    margin-top: 50px;
+    font-size: 2.3rem;
+  }
+
+  .output{
+    height: 40px;
+    font-size: 0.8rem;
+  }
+
+  .img-grid {
+    grid-gap: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .App{
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .App{
+    max-width: 90%;
+  }
+
+  .title h1{
+    font-size: 2.3rem;
+  }
+
+  .title h2{
+    margin-top: 50px;
+    font-size: 2.3rem;
+  }
+
+  .output{
+    height: 40px;
+  }
+
+  .img-grid {
+    grid-gap: 10px;
+  }
+}
+
+@media (max-width: 425px) {
+  .title h2{
+    margin-top: 50px;
+    font-size: 2rem;
+  }
+
+  .title p{
+    font-size: 0.9rem;
+  }
+
+  .output{
+    height: 20px;
+  }
+
+  .img-grid{
+    grid-template-columns: 1fr 1fr;
+  }
 }
