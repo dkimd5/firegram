@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useFirestore from "../hooks/useFirestore";
 import { motion } from "framer-motion/dist/es/index";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -18,8 +18,11 @@ import {
 
 function ImageGrid({ setSelectedImg }) {
   const { docs, hasMore, setHaveMore } = useFirestore("images");
+  const [cards, setCards] = useState([]);
 
-  // const [hasMore, setHaveMore] = useState(true);
+  useEffect(() => {
+    setCards(docs);
+  }, [docs]);
 
   const onclickHandlerDeleteImg = (imageName, imageId) => {
     const deleteFileRef = ref(projectStorage, imageName);
@@ -30,7 +33,7 @@ function ImageGrid({ setSelectedImg }) {
   };
 
   const loadMore = async () => {
-    const lastVisible = docs[docs.length - 1];
+    const lastVisible = cards[cards.length - 1];
 
     const next = query(
       collection(projectFirestore, "images"),
@@ -41,7 +44,7 @@ function ImageGrid({ setSelectedImg }) {
 
     const querySnapshot = await getDocs(next);
     querySnapshot.forEach((doc) => {
-      docs.push({ ...doc.data(), id: doc.id });
+      setCards((state) => [...state, { ...doc.data(), id: doc.id }]);
     });
 
     if (querySnapshot.docs.length === 0 || querySnapshot.docs.length < 9) {
@@ -53,13 +56,13 @@ function ImageGrid({ setSelectedImg }) {
     <div>
       <InfiniteScroll
         className="img-grid"
-        dataLength={docs.length}
+        dataLength={cards.length}
         next={loadMore}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
       >
-        {docs &&
-          docs.map((doc) => (
+        {cards &&
+          cards.map((doc) => (
             <motion.div className="img-wrap" key={doc.id} layout>
               <motion.img
                 src={doc.url}
