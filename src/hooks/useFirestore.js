@@ -10,6 +10,7 @@ import {
 
 const useFirestore = (collctnName) => {
   const [docs, setDocs] = useState([]);
+  const [hasMore, setHaveMore] = useState(true);
 
   useEffect(() => {
     const collectionRef = collection(projectFirestore, collctnName);
@@ -25,12 +26,13 @@ const useFirestore = (collctnName) => {
         documents.push({ ...doc.data(), id: doc.id });
       });
       setDocs(documents);
+      setHaveMore(true);
     });
 
     return () => unsub();
   }, [collctnName]);
 
-  return { docs };
+  return { docs, hasMore, setHaveMore };
 };
 
 export default useFirestore;

@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import useFirestore from "../hooks/useFirestore";
 import { motion } from "framer-motion/dist/es/index";
-// import InfiniteScroll from "react-infinite-scroller";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { projectStorage, projectFirestore } from "../firebase/config";
@@ -12,29 +11,26 @@ import {
   query,
   collection,
   orderBy,
-  startAt,
   startAfter,
   limit,
-  // onSnapshot,
   getDocs,
 } from "firebase/firestore";
 
 function ImageGrid({ setSelectedImg }) {
-  const { docs } = useFirestore("images");
-  console.log(docs);
+  const { docs, hasMore, setHaveMore } = useFirestore("images");
 
-  const [hasMore, setHaveMore] = useState(true);
+  // const [hasMore, setHaveMore] = useState(true);
 
   const onclickHandlerDeleteImg = (imageName, imageId) => {
     const deleteFileRef = ref(projectStorage, imageName);
 
     deleteObject(deleteFileRef);
     deleteDoc(doc(projectFirestore, "images", imageId));
+    setHaveMore(true);
   };
 
   const loadMore = async () => {
     const lastVisible = docs[docs.length - 1];
-    console.log("last", lastVisible);
 
     const next = query(
       collection(projectFirestore, "images"),
@@ -47,8 +43,10 @@ function ImageGrid({ setSelectedImg }) {
     querySnapshot.forEach((doc) => {
       docs.push({ ...doc.data(), id: doc.id });
     });
-    console.log(docs);
-    setHaveMore(false);
+
+    if (querySnapshot.docs.length === 0 || querySnapshot.docs.length < 9) {
+      setHaveMore(false);
+    }
   };
 
   return (
@@ -59,11 +57,6 @@ function ImageGrid({ setSelectedImg }) {
         next={loadMore}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
       >
         {docs &&
           docs.map((doc) => (
