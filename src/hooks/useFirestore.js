@@ -14,13 +14,13 @@ const useFirestore = (collctnName) => {
 
   useEffect(() => {
     const collectionRef = collection(projectFirestore, collctnName);
-    const collectionRefOrdered = query(
+    const collectionQuery = query(
       collectionRef,
       orderBy("createdAt", "desc"),
       limit(9)
     );
 
-    const unsub = onSnapshot(collectionRefOrdered, (snap) => {
+    const unsub = onSnapshot(collectionQuery, (snap) => {
       let documents = [];
       snap.forEach((doc) => {
         documents.push({ ...doc.data(), id: doc.id });

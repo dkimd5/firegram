@@ -14,6 +14,7 @@ import {
   startAfter,
   limit,
   getDocs,
+  onSnapshot,
 } from "firebase/firestore";
 
 function ImageGrid({ setSelectedImg }) {
@@ -41,15 +42,23 @@ function ImageGrid({ setSelectedImg }) {
       startAfter(lastVisible.createdAt),
       limit(9)
     );
-
     const querySnapshot = await getDocs(next);
-    querySnapshot.forEach((doc) => {
-      setCards((state) => [...state, { ...doc.data(), id: doc.id }]);
+    const unsub = onSnapshot(next, (snap) => {
+      let documents = [];
+      snap.forEach((doc) => {
+        documents.push({ ...doc.data(), id: doc.id });
+      });
+      setCards((state) => [...cards, ...documents]);
     });
-
     if (querySnapshot.docs.length === 0 || querySnapshot.docs.length < 9) {
       setHaveMore(false);
     }
+    return () => unsub();
+
+    // const querySnapshot = await getDocs(next);
+    // querySnapshot.forEach((doc) => {
+    //   setCards((state) => [...state, { ...doc.data(), id: doc.id }]);
+    // });
   };
 
   return (
