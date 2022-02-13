@@ -38,7 +38,7 @@ function ImageGrid({ setSelectedImg }) {
 
     const next = query(
       collection(projectFirestore, "images"),
-      orderBy("createdAt"),
+      orderBy("createdAt", "desc"),
       startAfter(lastVisible.createdAt),
       limit(9)
     );
