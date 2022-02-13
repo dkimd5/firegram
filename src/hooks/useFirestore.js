@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { projectFirestore } from "../firebase/config";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  limit,
+} from "firebase/firestore";
 
 const useFirestore = (collctnName) => {
   const [docs, setDocs] = useState([]);
@@ -9,8 +15,10 @@ const useFirestore = (collctnName) => {
     const collectionRef = collection(projectFirestore, collctnName);
     const collectionRefOrdered = query(
       collectionRef,
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
+      limit(9)
     );
+
     const unsub = onSnapshot(collectionRefOrdered, (snap) => {
       let documents = [];
       snap.forEach((doc) => {
