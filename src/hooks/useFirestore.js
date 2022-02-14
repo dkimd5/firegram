@@ -6,33 +6,28 @@ import {
   orderBy,
   onSnapshot,
   limit,
-  getDocs,
 } from "firebase/firestore";
 
 const useFirestore = (collctnName) => {
   const [docs, setDocs] = useState([]);
-  const [hasMore, setHaveMore] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
   const [loadLimit, setLoadLimit] = useState(9);
   const [loadCount, setLoadCount] = useState();
 
   useEffect(() => {
     const collectionRef = collection(projectFirestore, collctnName);
 
-    const countDocs = async () => {
-      setLoadCount("set null " + 0);
-      const querySnapshot = await getDocs(collectionRef);
+    const collectionAllDocs = query(collectionRef);
+    onSnapshot(collectionAllDocs, (snap) => {
       let count = 0;
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        // console.log(doc.id, " => ", doc.data());
+      snap.forEach((doc) => {
         count++;
-        console.log(count);
       });
-      console.log("final count " + count);
       setLoadCount(count);
-    };
-    console.log("loadCount " + loadCount);
-    countDocs();
+      if (count === 0) {
+        setHasMore(false);
+      }
+    });
 
     const collectionQuery = query(
       collectionRef,
@@ -44,18 +39,19 @@ const useFirestore = (collctnName) => {
       let documents = [];
       snap.forEach((doc) => {
         documents.push({ ...doc.data(), id: doc.id });
-        // setLoadCount((state) => state + 1);
       });
       setDocs(documents);
       if (loadLimit === loadCount || loadLimit > loadCount) {
-        setHaveMore(false);
+        setHasMore(false);
+      } else {
+        setHasMore(true);
       }
     });
 
     return () => unsub();
-  }, [collctnName, loadLimit]);
+  }, [collctnName, loadLimit, loadCount]);
 
-  return { docs, hasMore, setHaveMore, setLoadLimit };
+  return { docs, hasMore, setHasMore, setLoadLimit, loadLimit, loadCount };
 };
 
 export default useFirestore;

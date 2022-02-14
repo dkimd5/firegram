@@ -1,65 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useFirestore from "../hooks/useFirestore";
 import { motion } from "framer-motion/dist/es/index";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { projectStorage, projectFirestore } from "../firebase/config";
 import { ref, deleteObject } from "firebase/storage";
-import {
-  doc,
-  deleteDoc,
-  query,
-  collection,
-  orderBy,
-  startAfter,
-  limit,
-  getDocs,
-  onSnapshot,
-} from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 
 function ImageGrid({ setSelectedImg }) {
-  const { docs, hasMore, setHaveMore, setLoadLimit } = useFirestore("images");
-  // const [cards, setCards] = useState([]);
-
-  // useEffect(() => {
-  //   setCards(docs);
-  // }, [docs]);
+  const { docs, hasMore, setLoadLimit, loadLimit, loadCount } =
+    useFirestore("images");
 
   const onclickHandlerDeleteImg = (imageName, imageId) => {
     const deleteFileRef = ref(projectStorage, imageName);
 
     deleteObject(deleteFileRef);
     deleteDoc(doc(projectFirestore, "images", imageId));
-    setHaveMore(true);
   };
 
   const loadMore = () => {
-    setLoadLimit((state) => state + 9);
-    // const lastVisible = cards[cards.length - 1];
-
-    // const next = query(
-    //   collection(projectFirestore, "images"),
-    //   orderBy("createdAt", "desc"),
-    //   startAfter(lastVisible.createdAt),
-    //   limit(9)
-    // );
-    // const querySnapshot = await getDocs(next);
-    // const unsub = onSnapshot(next, (snap) => {
-    //   let documents = [];
-    //   snap.forEach((doc) => {
-    //     documents.push({ ...doc.data(), id: doc.id });
-    //   });
-    //   setCards((state) => [...cards, ...documents]);
-    // });
-    // if (querySnapshot.docs.length === 0 || querySnapshot.docs.length < 9) {
-    //   setHaveMore(false);
-    // }
-    // return () => unsub();
-
-    // const querySnapshot = await getDocs(next);
-    // querySnapshot.forEach((doc) => {
-    //   setCards((state) => [...state, { ...doc.data(), id: doc.id }]);
-    // });
+    if (loadLimit < loadCount) {
+      setLoadLimit((state) => state + 9);
+    }
   };
 
   return (
