@@ -12,7 +12,7 @@ const useFirestore = (collctnName) => {
   const [docs, setDocs] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [loadLimit, setLoadLimit] = useState(9);
-  const [loadCount, setLoadCount] = useState();
+  const [docsCount, setDocsCount] = useState();
 
   useEffect(() => {
     const collectionRef = collection(projectFirestore, collctnName);
@@ -23,7 +23,7 @@ const useFirestore = (collctnName) => {
       snap.forEach((doc) => {
         count++;
       });
-      setLoadCount(count);
+      setDocsCount(count);
       if (count === 0) {
         setHasMore(false);
       }
@@ -41,7 +41,7 @@ const useFirestore = (collctnName) => {
         documents.push({ ...doc.data(), id: doc.id });
       });
       setDocs(documents);
-      if (loadLimit === loadCount || loadLimit > loadCount) {
+      if (loadLimit === docsCount || loadLimit > docsCount) {
         setHasMore(false);
       } else {
         setHasMore(true);
@@ -49,9 +49,9 @@ const useFirestore = (collctnName) => {
     });
 
     return () => unsub();
-  }, [collctnName, loadLimit, loadCount]);
+  }, [collctnName, loadLimit, docsCount]);
 
-  return { docs, hasMore, setHasMore, setLoadLimit, loadLimit, loadCount };
+  return { docs, hasMore, setHasMore, setLoadLimit, loadLimit, docsCount };
 };
 
 export default useFirestore;

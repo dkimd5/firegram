@@ -8,7 +8,7 @@ import { ref, deleteObject } from "firebase/storage";
 import { doc, deleteDoc } from "firebase/firestore";
 
 function ImageGrid({ setSelectedImg }) {
-  const { docs, hasMore, setLoadLimit, loadLimit, loadCount } =
+  const { docs, hasMore, setLoadLimit, loadLimit, docsCount } =
     useFirestore("images");
 
   const onclickHandlerDeleteImg = (imageName, imageId) => {
@@ -19,7 +19,7 @@ function ImageGrid({ setSelectedImg }) {
   };
 
   const loadMore = () => {
-    if (loadLimit < loadCount) {
+    if (loadLimit < docsCount) {
       setLoadLimit((state) => state + 9);
     }
   };
