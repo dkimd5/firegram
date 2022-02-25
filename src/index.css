@@ -106,9 +106,9 @@ label:hover{
 
 .img-wrap{
   overflow: hidden;
-  height: 0;
-  padding: 50% 0;
-  /* padding controls height, so it will be perfectly square regardless of width */
+  height: auto;
+  width: 100%;
+   aspect-ratio: 1/1;
   position: relative;
   cursor: pointer;
 }
@@ -140,8 +140,8 @@ label:hover{
   opacity: 0.7;
   border: none;
   background-color: grey;
-  top: -140px;
-  left: 5px;
+  top: 10px;
+  left: 10px;
   padding: 3px 4px 2px;
 }
 
@@ -156,6 +156,12 @@ label:hover{
 
 .img-delete-btn:hover > svg {
   fill:#F9004D
+}
+
+@media (pointer: coarse) {
+  .img-wrap:hover > .img-delete-btn{
+    display: none;
+  }
 }
 
 /* modal styles */
